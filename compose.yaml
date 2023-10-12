@@ -1,0 +1,25 @@
+version: '3.1'
+
+services:
+  postgres_db:
+    image: postgres
+    restart: always
+    ports:
+     - 5432:5432
+    environment:
+      POSTGRES_PASSWORD: sqllab
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ${PWD}/postgres_data:/var/lib/postgresql/data/pgdata
+  pgadmin4:
+    image: dpage/pgadmin4
+    restart: always
+    user: "${UID}:${UID}"
+    ports:
+      - 80:80
+    volumes:
+      - ${PWD}/servers.json:/pgadmin4/servers.json
+      - ${PWD}/pgadmin4_data:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: sql@lab.it
+      PGADMIN_DEFAULT_PASSWORD: sqllab
